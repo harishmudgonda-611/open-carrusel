@@ -101,3 +101,23 @@ Screenshots were reviewed in the conversation; they are not committed as reposit
 5. A failed hard gate means the production method must change. Do not repeat the same model/configuration or simply rewrite the prompt.
 
 **Recommended RPD architecture:** separate the product-fidelity path from the creative-character path. The product image is immutable source material; generated character assets are separate. Layout/compositing combines them without falsely representing the outfit as a successful try-on.
+
+## In-app fidelity-safe composition (implemented in PR branch)
+
+The campaign editor includes a **Fidelity-safe product + anime composition** panel. It creates a slide using two separately selected reference images:
+
+- Original product image: displayed unchanged with `object-fit: contain`.
+- Anime character: displayed separately with `object-fit: contain`.
+- Disclosure text states that the character is illustrative and is not shown wearing a verified transfer.
+- Right Price Deal watermark is included.
+- Slide metadata is set to `product-details` and `not-verified`; it is not auto-approved.
+
+### Use it
+
+1. Upload both the original product photo and an anime character reference into the campaign's reference images.
+2. Open **Fidelity-safe product + anime composition** in the editor's image-generation panel.
+3. Select the original product source and the separate anime character.
+4. Create the slide.
+5. Inspect the preview and confirm both source images load and are fully visible. The slide remains `not-verified` until human review.
+
+This composition intentionally does **not** claim the character is wearing the garment. It is a fidelity-safe visual fallback, not a virtual try-on.
