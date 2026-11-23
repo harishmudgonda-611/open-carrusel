@@ -22,7 +22,7 @@ jobs:
           cache: npm
       - name: Upgrade patched Next.js and Sharp
         run: |
-          npm install --save-exact next@16.4.5 sharp@0.35.5
+          npm install --save-exact next@16.4.5 sharp@0.35.5 eslint-config-next@16.4.5
       - name: Validate regenerated lockfile and application
         run: |
           npm ci
