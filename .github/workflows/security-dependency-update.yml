@@ -1,4 +1,4 @@
-name: Temporary security dependency update (trigger)
+name: Temporary security dependency update (run)
 
 on:
   push:
