@@ -23,6 +23,10 @@ jobs:
       - name: Upgrade patched Next.js and Sharp
         run: |
           npm install --save-exact next@16.4.5 sharp@0.35.5 eslint-config-next@16.4.5
+      - name: Summarize dependency audit
+        run: |
+          npm audit --json > audit.json || true
+          node -e 'const a=require("./audit.json"); console.log(JSON.stringify({totals:a.metadata?.vulnerabilities, packages:Object.entries(a.vulnerabilities||{}).map(([name,v])=>({name,severity:v.severity,range:v.range,fixAvailable:v.fixAvailable,via:v.via.map(x=>typeof x==="string"?x:x.title)}))},null,2))'
       - name: Validate regenerated lockfile and application
         run: |
           npm ci
