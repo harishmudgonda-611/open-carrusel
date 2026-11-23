@@ -29,7 +29,9 @@ export async function POST(request: Request) {
     const mode: CampaignMode = campaignMode === "generic" ? "generic" : "rpd";
     const carousel = await createCarousel(name.trim(), ratio, { campaignMode: mode, productUrl });
     return NextResponse.json(carousel, { status: 201 });
-  } catch {
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  } catch (error) {
+    console.error("Campaign creation failed:", error);
+    const message = error instanceof Error ? error.message : "Unknown server error";
+    return NextResponse.json({ error: `Campaign creation failed: ${message}` }, { status: 500 });
   }
 }
