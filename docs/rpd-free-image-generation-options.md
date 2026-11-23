@@ -5,13 +5,13 @@ This guide distinguishes free testing from a dependable production provider. **N
 ## Recommended short test: Hugging Face ZeroGPU try-on demo
 
 - Browser-based, no local GPU required.
-- A CatVTON demo Space may be tested here: https://huggingface.co/spaces/Nandha2017/virtual-tryon
+- A Leffa ZeroGPU demo/API option may be tested here: https://huggingface.co/spaces/monk7/vtryon-a\n- Leffa's model/code license is reported as MIT; verify all dependency/checkpoint terms before commercial publishing. The Space author documents an anonymous JSON API, but its availability is not guaranteed.\n- Avoid using CatVTON or IDM-VTON for commercial RPD content without separate authorization; their model licenses are non-commercial.
 - ZeroGPU free account quota is limited (currently documented as 5 GPU minutes/day, with queues and eligibility restrictions).
 - Typical demo workflow: upload person/model reference, upload garment reference, choose garment type, run try-on, download result.
 - This tests whether garment transfer works with the chosen anime character. It does **not** establish that the output will remain anime or faithfully preserve every garment detail.
 - Treat this as an experimental third-party service: images are uploaded to the host. Do not upload private images or images without rights/permission.
 
-Official ZeroGPU information: https://huggingface.co/docs/hub/en/spaces-zerogpu
+Official ZeroGPU information: https://huggingface.co/docs/hub/en/spaces-zerogpu\n\nThe CatVTON demo is useful for non-commercial experimentation only; the upstream model card states CC BY-NC-SA 4.0. Do not use it in commercial Right Price Deal promotion unless you have explicit commercial permission.
 
 ## More flexible temporary GPU: Kaggle Notebook
 
