@@ -39,6 +39,7 @@ export function BrandSetup({ open, onComplete, initialBrand }: BrandSetupProps) 
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- synchronize the wizard with a newly loaded brand preset.
     if (initialBrand) setBrand(initialBrand);
   }, [initialBrand]);
 
