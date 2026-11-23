@@ -16,6 +16,7 @@ import { CaptionPanel } from "@/components/editor/CaptionPanel";
 import { FullscreenPreview } from "@/components/editor/FullscreenPreview";
 import type { Carousel, AspectRatio } from "@/types/carousel";
 import { RPDWorkflowBanner } from "@/components/rpd/RPDWorkflowBanner";
+import { RPDImageProviderPanel } from "@/components/rpd/RPDImageProviderPanel";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -214,6 +215,7 @@ export default function CarouselEditorPage({ params }: PageProps) {
       />
 
       {carousel.campaignMode === "rpd" && <RPDWorkflowBanner carousel={carousel} />}
+      {carousel.campaignMode === "rpd" && <RPDImageProviderPanel carousel={carousel} onGenerated={fetchCarousel} />}
 
       {/* Fullscreen preview */}
       <FullscreenPreview
