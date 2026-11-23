@@ -48,7 +48,6 @@ export function ChatPanel({
     if (storedSession) setSessionId(storedSession);
     try {
       const storedMessages = localStorage.getItem(`chat-messages-${carouselId}`);
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate persisted chat state after client mount.
       if (storedMessages) setMessages(JSON.parse(storedMessages));
     } catch {
       // ignore corrupted data
