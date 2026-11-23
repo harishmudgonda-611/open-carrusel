@@ -5,7 +5,7 @@ import { DIMENSIONS, MAX_SLIDES } from "@/types/carousel";
 
 function buildRPDPrompt(brand: BrandConfig, carousel?: Carousel | null, stylePreset?: StylePreset | null): string {
   const references = carousel?.referenceImages?.length
-    ? carousel.referenceImages.map((r) => `- ${r.name} | ${r.url} | ${r.absPath}`).join("\n")
+    ? carousel.referenceImages.map((r) => `- IMAGE ID: ${r.id} | NAME: ${r.name} | URL: ${r.url} | PATH: ${r.absPath}`).join("\n")
     : "No source images uploaded. Ask the user for product screenshots before creating image slides.";
   const brief = carousel?.rpdProductBrief;
   const briefText = brief
@@ -18,7 +18,7 @@ function buildRPDPrompt(brand: BrandConfig, carousel?: Carousel | null, stylePre
         `Fabric: ${brief.fabric || "not verified"}`,
         `Features: ${brief.verifiedFeatures.join("; ") || "none verified"}`,
         `Offers: ${brief.verifiedOffers.join("; ") || "none verified"}`,
-        `Variants: ${brief.variants.map((v) => v.name + " (verified=" + v.verified + ")").join(", ") || "none"}`,
+        `Variants: ${brief.variants.map((v) => v.name + " (verified=" + v.verified + "; source image IDs=" + v.referenceImageIds.join(", ") + ")").join(", ") || "none"}`,
         `Garment lock: ${brief.garmentDescription || "not locked"}`,
         `Included pieces: ${brief.includedPieces?.join(", ") || "not verified"}`,
         `Notes: ${brief.verificationNotes.join("; ") || "none"}`
@@ -69,6 +69,9 @@ function buildRPDPrompt(brand: BrandConfig, carousel?: Carousel | null, stylePre
     `Aspect ratio: ${carousel?.aspectRatio || "9:16"}`,
     `Existing slides: ${carousel?.slides.length || 0}`,
     briefText,
+    "",
+    "SOURCE IMAGE MAPPING:",
+    "Every reference image above has a stable IMAGE ID. Match variant referenceImageIds to those IDs; never infer variant colour from image filenames alone. Before generating a colour slide, confirm the selected variant's IDs resolve to uploaded source images. If a variant has no source image, stop and request it. Do not reuse a different colour's image.",
     "",
     "SOURCE IMAGES:",
     references,
