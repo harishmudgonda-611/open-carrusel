@@ -33,6 +33,9 @@ export function RPDImageProviderPanel({ carousel, onGenerated }: { carousel: Car
   const [job, setJob] = useState<ImageJob | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [fallbackProductId, setFallbackProductId] = useState("");
+  const [fallbackCharacterId, setFallbackCharacterId] = useState("");
+  const [fallbackSubmitting, setFallbackSubmitting] = useState(false);
 
   const references = useMemo(() => carousel.referenceImages ?? [], [carousel.referenceImages]);
   const defaultPrompt = useMemo(() => buildPrompt(carousel), [carousel]);
@@ -72,6 +75,70 @@ export function RPDImageProviderPanel({ carousel, onGenerated }: { carousel: Car
     return () => window.clearInterval(timer);
   }, [jobId, isPending, onGenerated]);
 
+  function escapeHtml(value: string) {
+    return value.replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+    }[char] ?? char));
+  }
+
+  function safeImageUrl(value: string) {
+    if (value.startsWith("/uploads/")) return value;
+    try {
+      const url = new URL(value);
+      return ["http:", "https:"].includes(url.protocol) ? url.toString() : "";
+    } catch {
+      return "";
+    }
+  }
+
+  async function createFidelitySafeSlide() {
+    const product = references.find((ref) => ref.id === fallbackProductId);
+    const character = references.find((ref) => ref.id === fallbackCharacterId);
+    const productUrl = product ? safeImageUrl(product.url) : "";
+    const characterUrl = character ? safeImageUrl(character.url) : "";
+    if (!product || !character || !productUrl || !characterUrl || product.id === character.id) {
+      setError("Choose two different valid source images.");
+      return;
+    }
+
+    setError("");
+    setFallbackSubmitting(true);
+    try {
+      const ratio = carousel.aspectRatio;
+      const html = `<div style="width:100%;height:100%;box-sizing:border-box;background:#f5efe7;color:#2f2924;font-family:Arial,sans-serif;display:flex;flex-direction:column;padding:3.5%;gap:2.5%;overflow:hidden">
+        <div style="flex:1;min-height:0;display:grid;grid-template-columns:1.12fr .88fr;gap:2.5%;align-items:stretch">
+          <div style="min-width:0;min-height:0;background:#fff;border-radius:22px;overflow:hidden;display:flex;align-items:center;justify-content:center;border:1px solid #e8ded3">
+            <img src="${escapeHtml(productUrl)}" alt="Original product source photo" style="width:100%;height:100%;object-fit:contain;display:block" />
+          </div>
+          <div style="min-width:0;min-height:0;background:#eee3d7;border-radius:22px;overflow:hidden;display:flex;align-items:center;justify-content:center;border:1px solid #e8ded3">
+            <img src="${escapeHtml(characterUrl)}" alt="Illustrative anime character" style="width:100%;height:100%;object-fit:contain;display:block" />
+          </div>
+        </div>
+        <div style="flex:0 0 auto;text-align:center;font-size:clamp(12px,2.2vw,26px);line-height:1.3;color:#62574d;padding:0 2%">Original product photo • Character is illustrative and is not shown wearing a verified transfer</div>
+        <div style="flex:0 0 auto;text-align:center;font-size:clamp(12px,2vw,24px);letter-spacing:.06em;font-weight:700;color:#5d5147">Right Price Deal</div>
+      </div>`;
+
+      const res = await fetch(`/api/carousels/${carousel.id}/slides`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          html,
+          notes: "Fidelity-safe composition: original product source shown untouched beside a separate illustrative anime character. No virtual try-on or garment-transfer claim. Review source image framing before publishing.",
+          rpdKind: "product-details",
+          qcStatus: "not-verified",
+          qcNotes: ["Product source image retained unchanged", "Character is separate and illustrative", "No garment-transfer claim", "Composition requires human visual review"],
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Unable to create fallback slide");
+      onGenerated();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Fallback slide creation failed");
+    } finally {
+      setFallbackSubmitting(false);
+    }
+  }
+
   async function generate() {
     setError("");
     setJob(null);
@@ -90,7 +157,31 @@ export function RPDImageProviderPanel({ carousel, onGenerated }: { carousel: Car
   }
 
   return (
-    <details className="border-b border-border bg-surface px-3 py-2">
+    <>
+      <details className="border-b border-border bg-surface px-3 py-2">
+        <summary className="cursor-pointer select-none text-sm font-medium">Fidelity-safe product + anime composition</summary>
+        <div className="mt-3 grid gap-3 md:grid-cols-2">
+          <p className="text-xs text-muted-foreground md:col-span-2">Creates a slide from the untouched original product image and a separate anime-character image. It does not generate a try-on or imply that the character is wearing the product. Both images remain independently visible.</p>
+          <div className="grid gap-2">
+            <label className="text-xs font-medium">Original product source</label>
+            <select className="h-9 rounded-md border border-border bg-background px-2 text-sm" value={fallbackProductId} onChange={(e) => setFallbackProductId(e.target.value)}>
+              <option value="">Choose product photo</option>
+              {references.map((ref) => <option key={ref.id} value={ref.id}>{ref.name}</option>)}
+            </select>
+          </div>
+          <div className="grid gap-2">
+            <label className="text-xs font-medium">Separate anime character</label>
+            <select className="h-9 rounded-md border border-border bg-background px-2 text-sm" value={fallbackCharacterId} onChange={(e) => setFallbackCharacterId(e.target.value)}>
+              <option value="">Choose character image</option>
+              {references.filter((ref) => ref.id !== fallbackProductId).map((ref) => <option key={ref.id} value={ref.id}>{ref.name}</option>)}
+            </select>
+          </div>
+          <Button variant="outline" size="sm" disabled={!fallbackProductId || !fallbackCharacterId || fallbackProductId === fallbackCharacterId || fallbackSubmitting} onClick={() => void createFidelitySafeSlide()}>
+            {fallbackSubmitting ? "Creating slide…" : "Create safe composition slide"}
+          </Button>
+        </div>
+      </details>
+      <details className="border-b border-border bg-surface px-3 py-2">
       <summary className="cursor-pointer select-none text-sm font-medium">AI garment image generation <span className="ml-2 text-xs text-muted-foreground">{provider?.connected ? "ComfyUI connected" : "Provider setup required"}</span></summary>
       <div className="mt-3 grid gap-3 md:grid-cols-2">
         <div className="rounded-md border border-amber-500/40 bg-amber-500/5 p-3 text-xs md:col-span-2"><strong>Product-fidelity fail-safe:</strong> Virtual try-on is experimental. If it changes the garment, omits any included piece, or makes the character photorealistic, reject the result. Do not repeat the same provider/configuration with prompt-only tweaks. Use the untouched product photo with a separate anime character as the honest fallback.</div>\n        <div className="rounded-md border border-border p-3 text-xs">
@@ -125,5 +216,6 @@ export function RPDImageProviderPanel({ carousel, onGenerated }: { carousel: Car
       {error && <p className="mt-2 text-xs text-destructive">{error}</p>}
       {!carousel.rpdProductBrief || carousel.rpdProductBrief.status !== "verified" ? <p className="mt-2 text-xs text-amber-600">Generation is disabled until the Product Fidelity Brief is verified.</p> : null}
     </details>
+    </>
   );
 }
