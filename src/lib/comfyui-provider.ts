@@ -1,4 +1,4 @@
-import { readFile, mkdir, writeFile } from "fs/promises";
+import { readFile, mkdir, writeFile, realpath } from "fs/promises";
 import path from "path";
 import sharp from "sharp";
 import { generateId, now } from "@/lib/utils";
