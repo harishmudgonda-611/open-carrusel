@@ -50,7 +50,6 @@ function buildRPDPrompt(brand: BrandConfig, carousel?: Carousel | null, stylePre
     "WORKFLOW:",
     "1. Attempt WebFetch on the provided product URL. Facts must be supported by source. Use screenshots if the page is blocked.",
     "2. Prepare and save a Product Fidelity Brief, then stop and wait for approval. Include product name, verified price/MRP/discount/offers, garment identity checklist, included pieces and every verified colour. Unknowns must be labelled not verified.",
-    "2. Prepare and save a Product Fidelity Brief, then stop and wait for approval. Include product name, verified price/MRP/discount/offers, garment details, included pieces and every verified colour. Unknowns must be labelled not verified.",
     "3. After brief approval, establish/approve the CHARACTER-ANCHOR asset before creating model slides. It must be a reusable identity reference (clear face plus full-body design). Upload it as CHARACTER-ANCHOR. If unavailable, stop; do not fake consistency.",
     "4. Create Slide 1 only: product name, verified price, verified MRP/discount and 2–4 verified features. Keep text minimal and use source photo.",
     "5. Each NEXT creates exactly one variant slide using BOTH the same CHARACTER-ANCHOR and the actual uploaded source image for that variant. Image-only, watermark only. If either reference is missing, ask for it instead of inventing.",
