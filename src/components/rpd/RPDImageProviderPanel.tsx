@@ -104,7 +104,6 @@ export function RPDImageProviderPanel({ carousel, onGenerated }: { carousel: Car
     setError("");
     setFallbackSubmitting(true);
     try {
-      const ratio = carousel.aspectRatio;
       const html = `<div style="width:100%;height:100%;box-sizing:border-box;background:#f5efe7;color:#2f2924;font-family:Arial,sans-serif;display:flex;flex-direction:column;padding:3.5%;gap:2.5%;overflow:hidden">
         <div style="flex:1;min-height:0;display:grid;grid-template-columns:1.12fr .88fr;gap:2.5%;align-items:stretch">
           <div style="min-width:0;min-height:0;background:#fff;border-radius:22px;overflow:hidden;display:flex;align-items:center;justify-content:center;border:1px solid #e8ded3">
