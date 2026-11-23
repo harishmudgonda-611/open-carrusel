@@ -67,6 +67,8 @@ This is **not practical on a typical Android phone** as a local inference host. 
 - No paid API assumption or cloud credit dependency.
 - Optional cloud provider support may be added later as an explicit user-selected adapter, never as the default.
 
-## Decision
+## Implementation status
 
-Do **not** claim the RPD image-generation requirement is completed until a provider adapter, a tested workflow template, source-image upload/queue/result handling, and fidelity QC are implemented and validated end-to-end.
+A server-side ComfyUI adapter is now implemented in this PR: configuration/status check, validated reference uploads, workflow node injection, prompt queue submission, job persistence/status polling, output download and campaign reference import. See `docs/comfyui-workflow-setup.md`.
+
+**Still incomplete:** no tested model/workflow template is bundled, no ComfyUI host is available in CI to run a real image generation, and there is no automated visual fidelity scoring. The provider integration has compile/CI validation only. Human QC remains required. Do not claim end-to-end garment fidelity until a real workflow has been tested.
