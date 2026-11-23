@@ -20,7 +20,7 @@ function buildRPDPrompt(brand: BrandConfig, carousel?: Carousel | null, stylePre
         `Offers: ${brief.verifiedOffers.join("; ") || "none verified"}`,
         `Variants: ${brief.variants.map((v) => v.name + " (verified=" + v.verified + ")").join(", ") || "none"}`,
         `Garment lock: ${brief.garmentDescription || "not locked"}`,
-        `Included pieces: ${brief.includedPieces.join(", ") || "not verified"}`,
+        `Included pieces: ${brief.includedPieces?.join(", ") || "not verified"}`,
         `Notes: ${brief.verificationNotes.join("; ") || "none"}`
       ].join("\n")
     : "No brief stored. Research source and present a Product Fidelity Brief first; unknown values must say not verified.";
