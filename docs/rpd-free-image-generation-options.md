@@ -75,3 +75,29 @@ Keep the self-hosted ComfyUI adapter as the configurable provider. Use ZeroGPU/K
 - Leffa ZeroGPU Space: https://huggingface.co/spaces/monk7/vtryon-a
 - Hugging Face ZeroGPU docs: https://huggingface.co/docs/hub/en/spaces-zerogpu
 - Kaggle Notebooks: https://www.kaggle.com/docs/notebooks
+
+
+## Real manual test log (user-run)
+
+### Leffa + photorealistic person + teal ethnic 3-piece set
+
+- **Observed:** generation completed; outfit colour and some printed details remained recognizable.
+- **Rejected:** anime requirement failed because the result was a photorealistic person.
+
+### Leffa + anime character + same teal ethnic 3-piece set
+
+- **Observed:** anime identity remained anime; upper garment transfer was visible.
+- **Rejected:** the output shortened/changed the kurta silhouette, did not faithfully transfer the dupatta, and retained the reference character's navy lower garment rather than the source pants pattern. Pattern details also changed.
+- **Conclusion:** this test configuration is not suitable for full ethnic-set RPD product fidelity. Do not keep retrying the same upper-category workflow with prompt-only tweaks.
+
+Screenshots were reviewed in the conversation; they are not committed as repository assets.
+
+## Fail-safe production workflow when try-on fails
+
+1. **Do not publish the generated try-on.** Mark it failed and keep the source product image as the truth.
+2. Prefer a transparent cutout/composite workflow: preserve the original product photography untouched in a dedicated product panel and place an anime character beside it, with the anime styling limited to the character. This is the honest fallback and does not claim the character is wearing the exact garment.
+3. If the product image contains a human model, do not claim a garment-preserving anime transformation unless that exact transformation has been visually verified. Anime treatment may be limited to the model/face only if the garment pixels/details remain unchanged and the result passes comparison.
+4. Use generative try-on only as an optional candidate. The image must pass character style, exact silhouette, all included pieces, colour, pattern/motif placement, neckline, borders and embellishment checks.
+5. A failed hard gate means the production method must change. Do not repeat the same model/configuration or simply rewrite the prompt.
+
+**Recommended RPD architecture:** separate the product-fidelity path from the creative-character path. The product image is immutable source material; generated character assets are separate. Layout/compositing combines them without falsely representing the outfit as a successful try-on.
