@@ -1,3 +1,8 @@
+import type { BrandConfig } from "@/types/brand";
+import type { Carousel } from "@/types/carousel";
+import type { StylePreset } from "@/types/style-preset";
+import { DIMENSIONS, MAX_SLIDES } from "@/types/carousel";
+
 function buildRPDPrompt(brand: BrandConfig, carousel?: Carousel | null, stylePreset?: StylePreset | null): string {
   const references = carousel?.referenceImages?.length
     ? carousel.referenceImages.map((r) => `- ${r.name} | ${r.url} | ${r.absPath}`).join("\n")
