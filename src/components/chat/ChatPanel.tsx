@@ -44,9 +44,11 @@ export function ChatPanel({
   // Load session ID and chat history from localStorage
   useEffect(() => {
     const storedSession = localStorage.getItem(`chat-session-${carouselId}`);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate persisted chat state after client mount.
     if (storedSession) setSessionId(storedSession);
     try {
       const storedMessages = localStorage.getItem(`chat-messages-${carouselId}`);
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate persisted chat state after client mount.
       if (storedMessages) setMessages(JSON.parse(storedMessages));
     } catch {
       // ignore corrupted data
