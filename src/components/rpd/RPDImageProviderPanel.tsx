@@ -52,7 +52,7 @@ export function RPDImageProviderPanel({ carousel, onGenerated }: { carousel: Car
     } finally { setLoadingStatus(false); }
   }, []);
 
-  useEffect(() => { void refreshStatus(); }, [refreshStatus]);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- state is updated only after the asynchronous provider request.\n  useEffect(() => { void refreshStatus(); }, [refreshStatus]);
 
   const jobId = job?.id;
   const isPending = job?.status === "queued" || job?.status === "running";
