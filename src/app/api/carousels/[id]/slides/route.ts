@@ -8,7 +8,7 @@ export async function POST(
   const { id } = await params;
   try {
     const body = await request.json();
-    const { html, notes } = body as { html?: string; notes?: string };
+    const { html, notes, rpdKind, qcStatus, qcNotes } = body as { html?: string; notes?: string; rpdKind?: "product-details" | "colour-variant" | "cta" | "other"; qcStatus?: "pending" | "pass" | "fail" | "not-verified"; qcNotes?: string[] };
 
     if (!html || typeof html !== "string") {
       return NextResponse.json(
@@ -17,7 +17,7 @@ export async function POST(
       );
     }
 
-    const slide = await addSlide(id, html, notes);
+    const slide = await addSlide(id, html, notes, { rpdKind, qcStatus, qcNotes });
     if (!slide) {
       return NextResponse.json(
         { error: "Carousel not found or max slides reached" },

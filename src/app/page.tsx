@@ -62,13 +62,15 @@ export default function DashboardPage() {
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [activeTab, setActiveTab] = useState<"carousels" | "templates">("carousels");
 
-  const handleCreate = useCallback(async (name: string, aspectRatio: string) => {
+  const handleCreate = useCallback(async (name: string, aspectRatio: string, productUrl?: string) => {
     const res = await fetch("/api/carousels", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name,
         aspectRatio,
+        productUrl,
+        campaignMode: "rpd",
       }),
     });
     if (res.ok) {
@@ -113,14 +115,14 @@ export default function DashboardPage() {
         <div className="max-w-5xl mx-auto px-6 py-8">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-2xl font-bold">Open Carrusel</h1>
+              <h1 className="text-2xl font-bold">Right Price Deal Studio</h1>
               <p className="text-sm text-muted-foreground mt-1">
-                Create Instagram carousels with AI
+                Product-first fashion deal campaigns with source fidelity
               </p>
             </div>
             <Button onClick={() => setShowCreateDialog(true)} variant="accent">
               <Plus className="h-4 w-4" />
-              New Carousel
+              New RPD Campaign
             </Button>
           </div>
 
@@ -134,7 +136,7 @@ export default function DashboardPage() {
                   : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
-              My Carousels
+              My Campaigns
             </button>
             <button
               onClick={() => setActiveTab("templates")}
@@ -163,7 +165,7 @@ export default function DashboardPage() {
             <div className="text-center py-20">
               <Layers className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
               <h2 className="text-lg font-semibold mb-2">
-                No carousels yet
+                No campaigns yet
               </h2>
               <p className="text-sm text-muted-foreground mb-6 max-w-md mx-auto">
                 Create your first Instagram carousel. Our AI assistant will
@@ -171,7 +173,7 @@ export default function DashboardPage() {
               </p>
               <Button onClick={() => setShowCreateDialog(true)} variant="accent" size="lg">
                 <Plus className="h-5 w-5" />
-                Create Your First Carousel
+                Create Your First RPD Campaign
               </Button>
             </div>
           ) : (

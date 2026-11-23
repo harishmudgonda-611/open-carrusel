@@ -8,7 +8,9 @@ export async function PUT(
   const { id, slideId } = await params;
   try {
     const body = await request.json();
-    const slide = await updateSlide(id, slideId, body);
+    const allowed = ["html", "notes", "rpdKind", "qcStatus", "qcNotes"];
+    const updates = Object.fromEntries(Object.entries(body as Record<string, unknown>).filter(([key]) => allowed.includes(key)));
+    const slide = await updateSlide(id, slideId, updates);
     if (!slide) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
