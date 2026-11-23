@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+      - run: npm install
       - name: Upgrade known vulnerable major dependencies
         run: npm install --save-exact puppeteer@25.18.1 archiver@8.0.0 @types/archiver@8.0.0
       - name: Apply non-breaking audit fixes
