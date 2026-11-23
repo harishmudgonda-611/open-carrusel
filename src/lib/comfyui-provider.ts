@@ -80,8 +80,17 @@ async function loadWorkflow() {
   for (const [envName, id] of required) {
     if (!id || !workflow[id]?.inputs) throw new Error(`${envName} must point to an existing workflow node with inputs`);
   }
+  if (!("image" in workflow[config.garmentNodeId!].inputs!) || !("image" in workflow[config.characterNodeId!].inputs!)) {
+    throw new Error("Garment and character nodes must expose an image input");
+  }
+  if (!("text" in workflow[config.promptNodeId!].inputs!)) {
+    throw new Error("Positive prompt node must expose a text input");
+  }
   if (config.negativePromptNodeId && !workflow[config.negativePromptNodeId]?.inputs) {
     throw new Error("COMFYUI_NEGATIVE_PROMPT_NODE_ID must point to a node with inputs");
+  }
+  if (config.negativePromptNodeId && !("text" in workflow[config.negativePromptNodeId].inputs!)) {
+    throw new Error("Negative prompt node must expose a text input");
   }
   return { workflow, config };
 }
@@ -90,7 +99,9 @@ async function uploadReference(ref: ReferenceImage, baseUrl: string): Promise<st
   const uploadRoot = path.resolve(process.cwd(), "public/uploads");
   const filePath = path.resolve(ref.absPath);
   if (!filePath.startsWith(uploadRoot + path.sep)) throw new Error("Reference image path is outside the uploads directory");
-  const bytes = await readFile(filePath);
+  const [realUploadRoot, realFilePath] = await Promise.all([realpath(uploadRoot), realpath(filePath)]);
+  if (!realFilePath.startsWith(realUploadRoot + path.sep)) throw new Error("Reference image resolves outside the uploads directory");
+  const bytes = await readFile(realFilePath);
   if (bytes.byteLength > MAX_IMAGE_BYTES) throw new Error("Reference image exceeds 10MB provider upload limit");
   const normalized = await sharp(bytes).rotate().png().toBuffer();
   const form = new FormData();
