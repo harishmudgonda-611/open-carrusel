@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Cross-platform setup for Open Carrusel. Runs on macOS, Linux, and Windows.
+// Cross-platform setup for Right Price Deal Studio. Runs on macOS, Linux, and Windows.
 
 import fs from "node:fs";
 import os from "node:os";
@@ -86,18 +86,18 @@ function seedDataFiles() {
 
   const seeds = {
     "brand.json": {
-      name: "",
+      name: "Right Price Deal",
       colors: {
-        primary: "#1a1a2e",
-        secondary: "#16213e",
-        accent: "#e94560",
-        background: "#ffffff",
-        surface: "#f5f5f5",
+        primary: "#6d1735",
+        secondary: "#6b6b1e",
+        accent: "#e8b323",
+        background: "#fff8ed",
+        surface: "#f8ebdd",
       },
       fonts: { heading: "Inter", body: "Inter" },
       customFonts: [],
       logoPath: null,
-      styleKeywords: [],
+      styleKeywords: ["minimal", "premium", "product-first", "warm neutral"],
       createdAt: "",
       updatedAt: "",
     },
@@ -137,7 +137,7 @@ function writeEnvLocal(claudePath) {
 }
 
 async function main() {
-  log("🎠 Setting up Open Carrusel...");
+  log("Setting up Right Price Deal Studio...");
   log("");
 
   log(
@@ -173,7 +173,7 @@ async function main() {
     return;
   }
 
-  log("🚀 Starting Open Carrusel...");
+  log("Starting Right Price Deal Studio...");
   log("  Open http://localhost:3000 in your browser");
   log("");
   runSync("npm", ["run", "dev"]);
