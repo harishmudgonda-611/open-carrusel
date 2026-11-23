@@ -2,7 +2,7 @@ import { readFile, writeFile, rename, mkdir } from "fs/promises";
 import path from "path";
 import { Mutex } from "async-mutex";
 
-const DATA_DIR = path.resolve(process.cwd(), "data");
+// Vercel serverless filesystems are read-only except /tmp. This fallback is ephemeral\n// and intended for preview testing only; durable production storage needs a database.\nconst DATA_DIR = process.env.VERCEL ? path.join("/tmp", "open-carrusel-data") : path.resolve(process.cwd(), "data");
 const mutexes = new Map<string, Mutex>();
 
 function getMutex(filename: string): Mutex {
