@@ -39,5 +39,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add package.json package-lock.json src/components/chat/ChatPanel.tsx src/app/api/carousels/[id]/export/route.ts
-          if git diff --cached --quiet; then echo "No changes"; else git commit -m "Update browser and archive dependencies" && git push origin rpd-product-fidelity-pipeline; fi
+          git add package.json package-lock.json src/components/chat/ChatPanel.tsx src/app/api/carousels/[id]/export/route.ts src/lib/export-slides.ts
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Update browser and archive dependencies"
+            git pull --rebase origin rpd-product-fidelity-pipeline
+            git push origin rpd-product-fidelity-pipeline
+          fi
