@@ -34,15 +34,13 @@ export function RPDImageProviderPanel({ carousel, onGenerated }: { carousel: Car
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  const references = carousel.referenceImages ?? [];
+  const references = useMemo(() => carousel.referenceImages ?? [], [carousel.referenceImages]);
+  const defaultPrompt = useMemo(() => buildPrompt(carousel), [carousel]);
+  const prompt = promptOverride ?? defaultPrompt;
   const mappedGarmentRefs = useMemo(() => {
     const ids = new Set(carousel.rpdProductBrief?.variants.filter(v => v.verified).flatMap(v => v.referenceImageIds) ?? []);
     return references.filter(ref => ids.has(ref.id));
   }, [carousel.rpdProductBrief, references]);
-
-  useEffect(() => {
-    setPrompt(buildPrompt(carousel));
-  }, [carousel.id, carousel.rpdProductBrief?.updatedAt]);
 
   const refreshStatus = useCallback(async () => {
     setLoadingStatus(true);
@@ -56,11 +54,13 @@ export function RPDImageProviderPanel({ carousel, onGenerated }: { carousel: Car
 
   useEffect(() => { void refreshStatus(); }, [refreshStatus]);
 
+  const jobId = job?.id;
+  const isPending = job?.status === "queued" || job?.status === "running";
   useEffect(() => {
-    if (!job || !["queued", "running"].includes(job.status)) return;
+    if (!jobId || !isPending) return;
     const timer = window.setInterval(async () => {
       try {
-        const res = await fetch(`/api/image-provider/jobs/${job.id}`);
+        const res = await fetch(`/api/image-provider/jobs/${jobId}`);
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Unable to check generation job");
         const updated: ImageJob = data.job;
