@@ -1,10 +1,10 @@
 <div align="center">
 
-# Open Carrusel
+# Right Price Deal Studio (Open Carrusel)
 
-### Chat with Claude. Design Instagram carousels. Export pixel-perfect PNGs.
+### Product-first fashion deal carousels with source fidelity.
 
-**Local-first. Open source. One command to start.**
+**Local-first. RPD campaign workflow. One command to start.**
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-1a1a2e.svg?style=flat-square)](./LICENSE)
 [![Built with Claude](https://img.shields.io/badge/built%20with-Claude-e94560.svg?style=flat-square)](https://claude.ai)
@@ -19,6 +19,21 @@
 </div>
 
 ---
+
+## Right Price Deal (RPD) workflow
+
+RPD campaigns follow a product-fidelity-first workflow:
+
+1. Paste a product URL and/or upload product screenshots.
+2. Inspect the source and create a Product Fidelity Brief with verified product facts and every genuine colour variant.
+3. Wait for the user's approval before Slide 1.
+4. Generate only one slide per user turn: product-details poster, one image-only slide per verified colour, then final CTA.
+5. Colour slides contain no promotional copy; only the discreet RPD watermark is allowed.
+6. Unknown facts remain unverified. Do not invent fabric, comfort, offers, prices, variants or links.
+
+**Image-generation limitation:** The app's AI integration generates HTML/CSS slide layouts and has no image-generation or garment-transfer provider. It cannot create or guarantee consistent anime influencer/product try-on by itself. The RPD workflow therefore requires uploaded source product images and an approved Character Anchor; original product photos remain the garment truth. If reference-conditioned editing is unavailable, mark identity/product fidelity **NOT VERIFIED** and use the untouched product image rather than a misleading generated garment.
+
+**Identity + garment fidelity protocol:** Keep one approved anime fashion-influencer Character Anchor across slides; vary editorial poses (walking, three-quarter, over-shoulder, relaxed, hero) but not identity. Lock the product's silhouette, neckline, sleeves, length, fabric appearance, print/motifs, embroidery/placement, borders, dupatta, trouser, included pieces and exact variant colour. Clothing must look like realistic textile while the model remains illustrated. Prefer reference-first editing and targeted fixes over fresh full-image generation. QC separately checks character identity, product identity, garment realism, pose/visibility, variant colour, anatomy, composition and text. QC cannot be marked PASS without actual inspection against references.
 
 ## Table of contents
 
@@ -78,7 +93,7 @@ It's open source under MIT. Fork it, tweak the system prompt, ship your own vari
 1. **Install [Claude Code](https://docs.anthropic.com/en/docs/claude-code)** and authenticate.
 2. **Clone and open the repo** in Claude Code:
    ```bash
-   git clone https://github.com/Hainrixz/open-carrusel.git
+   git clone https://github.com/harishmudgonda-611/open-carrusel.git
    cd open-carrusel
    claude
    ```

@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus, Trash2, Undo2, GripVertical } from "lucide-react";
+import { Plus, Trash2, Undo2, GripVertical, CheckCircle2, XCircle, CircleHelp } from "lucide-react";
 import {
   DndContext,
   closestCenter,
@@ -134,6 +134,13 @@ function SortableSlideThumb({
           </Button>
         )}
       </div>
+
+      {slide.rpdKind && (
+        <div className={cn("absolute top-1 left-1 rounded px-1 py-0.5 text-[8px] font-semibold shadow-sm", slide.qcStatus === "pass" ? "bg-green-600 text-white" : slide.qcStatus === "fail" ? "bg-red-600 text-white" : "bg-black/65 text-white")}>
+          {slide.qcStatus === "pass" ? <CheckCircle2 className="inline h-2.5 w-2.5 mr-0.5" /> : slide.qcStatus === "fail" ? <XCircle className="inline h-2.5 w-2.5 mr-0.5" /> : <CircleHelp className="inline h-2.5 w-2.5 mr-0.5" />}
+          {slide.qcStatus === "pass" ? "PASS" : slide.qcStatus === "fail" ? "FAIL" : "NOT CHECKED"}
+        </div>
+      )}
 
       {/* Slide number */}
       <div className="absolute bottom-1 left-1 text-[9px] font-bold text-white bg-black/60 rounded px-1 py-0.5 leading-none">

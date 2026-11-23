@@ -1,18 +1,51 @@
 export type AspectRatio = "1:1" | "4:5" | "9:16";
 
+export type CampaignMode = "generic" | "rpd";
+
+export type RPDSlideKind = "product-details" | "colour-variant" | "cta" | "other";
+
+export type RPDQualityStatus = "pending" | "pass" | "fail" | "not-verified";
+
+export interface RPDVariant {
+  name: string;
+  referenceImageIds: string[];
+  verified: boolean;
+}
+
+export interface RPDProductBrief {
+  sourceUrl?: string;
+  productName?: string;
+  brand?: string;
+  sellingPrice?: string;
+  originalPrice?: string;
+  discount?: string;
+  verifiedOffers: string[];
+  verifiedFeatures: string[];
+  fabric?: string;
+  garmentDescription?: string;
+  includedPieces?: string[];
+  variants: RPDVariant[];
+  verificationNotes: string[];
+  status: "draft" | "verified" | "needs-source";
+  updatedAt?: string;
+}
+
 export interface Slide {
   id: string;
   html: string;
   previousVersions: string[];
   order: number;
   notes: string;
+  rpdKind?: RPDSlideKind;
+  qcStatus?: RPDQualityStatus;
+  qcNotes?: string[];
 }
 
 export interface ReferenceImage {
   id: string;
-  url: string;       // e.g. "/uploads/abc.png"
-  absPath: string;    // absolute path for Claude to Read
-  name: string;       // original filename or description
+  url: string;
+  absPath: string;
+  name: string;
   addedAt: string;
 }
 
@@ -27,6 +60,9 @@ export interface Carousel {
   chatSessionId: string | null;
   isTemplate: boolean;
   tags: string[];
+  campaignMode?: CampaignMode;
+  productUrl?: string;
+  rpdProductBrief?: RPDProductBrief;
   createdAt: string;
   updatedAt: string;
 }
