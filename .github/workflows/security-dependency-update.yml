@@ -1,0 +1,38 @@
+name: Temporary security dependency update
+
+on:
+  push:
+    branches: [rpd-product-fidelity-pipeline]
+    paths:
+      - .github/workflows/security-dependency-update.yml
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: rpd-product-fidelity-pipeline
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Upgrade patched Next.js and Sharp
+        run: |
+          npm install --save-exact next@16.4.5 sharp@0.35.5
+      - name: Validate regenerated lockfile and application
+        run: |
+          npm ci
+          npm run lint
+          npx tsc --noEmit
+          npm run build
+      - name: Commit dependency update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git commit -m "Update Next.js and Sharp security patches"
+          git push origin rpd-product-fidelity-pipeline
