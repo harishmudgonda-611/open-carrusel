@@ -85,7 +85,7 @@ export function buildSystemPrompt(brand: BrandConfig, carousel?: Carousel | null
     ? `## Current carousel\n- ID: ${carousel.id}\n- Name: "${carousel.name}"\n- Aspect ratio: ${carousel.aspectRatio} (${DIMENSIONS[carousel.aspectRatio].width}x${DIMENSIONS[carousel.aspectRatio].height}px)\n- Slides: ${carousel.slides.length}/${MAX_SLIDES}\n${carousel.slides.length > 0 ? carousel.slides.map((s) => `  - Slide ${s.order + 1} (ID: ${s.id})${s.notes ? ` — ${s.notes}` : ""}`).join("\n") : "  (no slides yet)"}\n${(carousel.referenceImages?.length ?? 0) > 0 ? `\n## Reference images (use Read to view these)\n${carousel.referenceImages.map((r) => `- "${r.name}" → ${r.absPath}`).join("\n")}` : ""}`
     : "";
 
-  const presetSection = stylePreset ? `## Active style preset: "${stylePreset.name}"\nFollow these design rules for ALL slides:\n${stylePreset.designRules}\n${stylePreset.exampleSlideHtml ? `Example slide HTML for reference:\n```html\n${stylePreset.exampleSlideHtml.substring(0, 500)}\n``` : ""}` : "";
+  const presetSection = stylePreset ? `## Active style preset: "${stylePreset.name}"\nFollow these design rules for ALL slides:\n${stylePreset.designRules}\n${stylePreset.exampleSlideHtml ? `Example slide HTML for reference:\n${stylePreset.exampleSlideHtml.substring(0, 500)}` : ""}` : "";
   const dimensions = carousel ? DIMENSIONS[carousel.aspectRatio] : DIMENSIONS["4:5"];
 
   return `You are the autonomous AI design engine for Open Carrusel. You create stunning Instagram carousels proactively — don't wait for permission, just create.
