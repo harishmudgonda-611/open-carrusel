@@ -22,7 +22,7 @@ export function RPDWorkflowBanner({ carousel }: { carousel: Carousel }) {
           <span className="inline-flex items-center gap-1 rounded-md border bg-background px-2 py-1"><ImagePlus className="h-3 w-3" />{hasRefs ? `${carousel.referenceImages.length} source image(s) attached` : "Upload source screenshots in the chat panel"}</span>
           <span className={`inline-flex items-center gap-1 rounded-md border px-2 py-1 ${verified ? "bg-green-50 text-green-800 border-green-200" : "bg-background"}`}>{verified ? <CheckCircle2 className="h-3 w-3" /> : <ShieldCheck className="h-3 w-3" />}{verified ? "Product brief verified" : "Product brief not yet verified"}</span>
         </div>
-        {brief && <p className="text-[11px] text-muted-foreground">Brief: {brief.productName || "Untitled product"} · {brief.variants.length} variant(s) recorded · status: {brief.status}</p>}
+        {brief && <div className="text-[11px] text-muted-foreground">Brief: {brief.productName || "Untitled product"} · {brief.variants.length} variant(s) recorded · status: {brief.status}{brief.variants.length > 0 && <div className="mt-1 flex flex-wrap gap-1">{brief.variants.map((variant) => <span key={variant.name} className="rounded border px-1.5 py-0.5">{variant.name}{variant.verified ? " · verified" : " · unverified"}</span>)}</div>}</div>}
       </div>
     </section>
   );

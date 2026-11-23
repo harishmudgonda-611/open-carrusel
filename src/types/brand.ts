@@ -28,13 +28,13 @@ export interface BrandConfig {
 }
 
 export const DEFAULT_BRAND: BrandConfig = {
-  name: "",
+  name: "Right Price Deal",
   colors: {
-    primary: "#1a1a2e",
-    secondary: "#16213e",
-    accent: "#e94560",
-    background: "#ffffff",
-    surface: "#f5f5f5",
+    primary: "#6d1735",
+    secondary: "#6b6b1e",
+    accent: "#e8b323",
+    background: "#fff8ed",
+    surface: "#f8ebdd",
   },
   fonts: {
     heading: "Inter",
@@ -42,7 +42,7 @@ export const DEFAULT_BRAND: BrandConfig = {
   },
   customFonts: [],
   logoPath: null,
-  styleKeywords: [],
+  styleKeywords: ["minimal", "premium", "product-first", "warm neutral"],
   createdAt: "",
   updatedAt: "",
 };
