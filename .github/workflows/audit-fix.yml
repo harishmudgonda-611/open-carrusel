@@ -1,4 +1,4 @@
-name: Temporary npm audit fix
+name: Temporary npm audit fix (trigger)
 
 on:
   push:
