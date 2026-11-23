@@ -91,7 +91,7 @@ It's open source under MIT. Fork it, tweak the system prompt, ship your own vari
 1. **Install [Claude Code](https://docs.anthropic.com/en/docs/claude-code)** and authenticate.
 2. **Clone and open the repo** in Claude Code:
    ```bash
-   git clone https://github.com/Hainrixz/open-carrusel.git
+   git clone https://github.com/harishmudgonda-611/open-carrusel.git
    cd open-carrusel
    claude
    ```

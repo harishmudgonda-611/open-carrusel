@@ -282,7 +282,7 @@ export function ChatPanel({
           <div className="p-6 text-center text-muted-foreground">
             <p className="text-sm mb-1">No messages yet</p>
             <p className="text-xs">
-              {campaignMode === "rpd" ? "Start by verifying the product and every colour variant. Upload screenshots if the source link is blocked." : "Tell me what carousel you&apos;d like to create"}
+              {campaignMode === "rpd" ? "Start by verifying the product and every colour variant. Upload screenshots if the source link is blocked." : "Tell me what carousel you would like to create"}
             </p>
             {campaignMode === "rpd" && productUrl && <p className="text-[10px] mt-3 break-all">Product source: {productUrl}</p>}
           </div>
