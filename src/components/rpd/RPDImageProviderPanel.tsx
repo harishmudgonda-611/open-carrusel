@@ -93,7 +93,7 @@ export function RPDImageProviderPanel({ carousel, onGenerated }: { carousel: Car
     <details className="border-b border-border bg-surface px-3 py-2">
       <summary className="cursor-pointer select-none text-sm font-medium">AI garment image generation <span className="ml-2 text-xs text-muted-foreground">{provider?.connected ? "ComfyUI connected" : "Provider setup required"}</span></summary>
       <div className="mt-3 grid gap-3 md:grid-cols-2">
-        <div className="rounded-md border border-border p-3 text-xs">
+        <div className="rounded-md border border-amber-500/40 bg-amber-500/5 p-3 text-xs md:col-span-2"><strong>Product-fidelity fail-safe:</strong> Virtual try-on is experimental. If it changes the garment, omits any included piece, or makes the character photorealistic, reject the result. Do not repeat the same provider/configuration with prompt-only tweaks. Use the untouched product photo with a separate anime character as the honest fallback.</div>\n        <div className="rounded-md border border-border p-3 text-xs">
           <div className="font-medium">Provider</div>
           <div className={provider?.connected ? "text-green-600" : "text-muted-foreground"}>{loadingStatus ? "Checking…" : provider?.message || "Not checked"}</div>
           <Button variant="outline" size="sm" className="mt-2" onClick={() => void refreshStatus()}>Check connection</Button>
