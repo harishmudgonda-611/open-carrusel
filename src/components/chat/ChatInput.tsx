@@ -10,6 +10,8 @@ interface ChatInputProps {
   disabled?: boolean;
   textareaRef?: React.RefObject<HTMLTextAreaElement | null>;
   onStop?: () => void;
+  suggestions?: string[];
+  placeholder?: string;
 }
 
 const SUGGESTIONS = [
@@ -20,7 +22,7 @@ const SUGGESTIONS = [
   "Make the headings bigger",
 ];
 
-export function ChatInput({ onSend, isStreaming, disabled, textareaRef: externalRef, onStop }: ChatInputProps) {
+export function ChatInput({ onSend, isStreaming, disabled, textareaRef: externalRef, onStop, suggestions = SUGGESTIONS, placeholder }: ChatInputProps) {
   const [value, setValue] = useState("");
   const internalRef = useRef<HTMLTextAreaElement>(null);
   const textareaRef = externalRef || internalRef;
@@ -54,7 +56,7 @@ export function ChatInput({ onSend, isStreaming, disabled, textareaRef: external
     <div className="border-t border-border p-3">
       {value.length === 0 && !isStreaming && (
         <div className="flex flex-wrap gap-1.5 mb-2">
-          {SUGGESTIONS.slice(0, 3).map((suggestion) => (
+          {suggestions.slice(0, 4).map((suggestion) => (
             <button
               key={suggestion}
               onClick={() => setValue(suggestion)}
@@ -73,7 +75,7 @@ export function ChatInput({ onSend, isStreaming, disabled, textareaRef: external
           onKeyDown={handleKeyDown}
           onInput={handleInput}
           placeholder={
-            isStreaming ? "AI is working..." : "Describe your carousel..."
+            isStreaming ? "AI is working..." : (placeholder || "Describe your carousel...")
           }
           disabled={isStreaming || disabled}
           rows={1}

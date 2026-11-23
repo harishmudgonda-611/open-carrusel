@@ -168,8 +168,7 @@ export default function DashboardPage() {
                 No campaigns yet
               </h2>
               <p className="text-sm text-muted-foreground mb-6 max-w-md mx-auto">
-                Create your first Instagram carousel. Our AI assistant will
-                help you design beautiful slides in seconds.
+                Start with a product link or source screenshots. Verify the product brief, then create slides one at a time.
               </p>
               <Button onClick={() => setShowCreateDialog(true)} variant="accent" size="lg">
                 <Plus className="h-5 w-5" />

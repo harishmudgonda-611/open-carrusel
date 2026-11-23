@@ -20,6 +20,8 @@ interface ChatPanelProps {
   onStreamStart?: () => void;
   onStreamEnd?: () => void;
   chatInputRef?: React.RefObject<HTMLTextAreaElement | null>;
+  campaignMode?: "generic" | "rpd";
+  productUrl?: string;
 }
 
 export function ChatPanel({
@@ -29,6 +31,8 @@ export function ChatPanel({
   onStreamStart,
   onStreamEnd,
   chatInputRef,
+  campaignMode = "generic",
+  productUrl,
 }: ChatPanelProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
@@ -278,8 +282,9 @@ export function ChatPanel({
           <div className="p-6 text-center text-muted-foreground">
             <p className="text-sm mb-1">No messages yet</p>
             <p className="text-xs">
-              Tell me what carousel you&apos;d like to create
+              {campaignMode === "rpd" ? "Start by verifying the product and every colour variant. Upload screenshots if the source link is blocked." : "Tell me what carousel you&apos;d like to create"}
             </p>
+            {campaignMode === "rpd" && productUrl && <p className="text-[10px] mt-3 break-all">Product source: {productUrl}</p>}
           </div>
         )}
         {messages.map((msg) => (
@@ -303,6 +308,8 @@ export function ChatPanel({
       </div>
 
       <ChatInput
+        suggestions={campaignMode === "rpd" ? ["Analyze my product link and prepare the fidelity brief", "Build the brief from my uploaded product screenshots", "Create Slide 1 after I approve the brief", "NEXT"] : undefined}
+        placeholder={campaignMode === "rpd" ? "Research product, verify brief, or type NEXT..." : undefined}
         onSend={handleSend}
         isStreaming={isStreaming}
         textareaRef={chatInputRef}
