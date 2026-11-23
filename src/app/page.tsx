@@ -73,10 +73,13 @@ export default function DashboardPage() {
         campaignMode: "rpd",
       }),
     });
-    if (res.ok) {
-      const carousel = await res.json();
-      router.push(`/carousel/${carousel.id}`);
+    if (!res.ok) {
+      const data = await res.json().catch(() => null);
+      throw new Error(data?.error || `Campaign creation failed (HTTP ${res.status}).`);
     }
+    const carousel = await res.json();
+    if (!carousel?.id) throw new Error("The server returned an invalid campaign response.");
+    router.push(`/carousel/${carousel.id}`);
   }, [router]);
 
   return (
