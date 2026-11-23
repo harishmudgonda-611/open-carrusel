@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import archiver from "archiver";
+import { ZipArchive } from "archiver";
 import { getCarousel } from "@/lib/carousels";
 import { exportAllSlides } from "@/lib/export-slides";
 
@@ -31,7 +31,7 @@ export async function POST(
 
     // Build ZIP archive and collect all data
     const zipBuffer = await new Promise<Buffer>((resolve, reject) => {
-      const archive = archiver("zip", { zlib: { level: 5 } });
+      const archive = new ZipArchive({ zlib: { level: 5 } });
       const chunks: Buffer[] = [];
 
       archive.on("data", (chunk: Buffer) => {
