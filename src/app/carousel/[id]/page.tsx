@@ -13,7 +13,6 @@ import { SlideFilmstrip } from "@/components/editor/SlideFilmstrip";
 import { AspectRatioSelector } from "@/components/editor/AspectRatioSelector";
 import { ExportButton } from "@/components/editor/ExportButton";
 import { CaptionPanel } from "@/components/editor/CaptionPanel";
-import { SafeZoneOverlay } from "@/components/editor/SafeZoneOverlay";
 import { FullscreenPreview } from "@/components/editor/FullscreenPreview";
 import type { Carousel, AspectRatio } from "@/types/carousel";
 import { RPDWorkflowBanner } from "@/components/rpd/RPDWorkflowBanner";
