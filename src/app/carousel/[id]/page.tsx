@@ -29,7 +29,7 @@ export default function CarouselEditorPage({ params }: PageProps) {
   const [notFound, setNotFound] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [claudeAvailable, setClaudeAvailable] = useState(true);
-  const [chatOpen, setChatOpen] = useState(true);
+  const [chatOpen, setChatOpen] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [showSafeZones, setShowSafeZones] = useState(false);
   const [showFullscreen, setShowFullscreen] = useState(false);
@@ -238,11 +238,17 @@ export default function CarouselEditorPage({ params }: PageProps) {
         onConfirm={confirmState.onConfirm}
       />
 
+      {/* Mobile workspace switcher: keep chat and canvas full-width instead of squeezing them side-by-side. */}
+      <div className="md:hidden grid grid-cols-2 border-b border-border bg-surface shrink-0">
+        <button onClick={() => setChatOpen(true)} className={`py-3 text-sm font-medium ${chatOpen ? "border-b-2 border-accent text-accent" : "text-muted-foreground"}`}>Chat / AI</button>
+        <button onClick={() => setChatOpen(false)} className={`py-3 text-sm font-medium ${!chatOpen ? "border-b-2 border-accent text-accent" : "text-muted-foreground"}`}>Preview</button>
+      </div>
+
       {/* Main editor area */}
       <div className="flex-1 flex min-h-0 overflow-hidden">
         {/* Chat panel */}
         {chatOpen && (
-          <div className="oc-fade w-80 border-r border-border shrink-0 flex flex-col bg-surface">
+          <div className={`oc-fade w-full md:w-80 md:border-r border-border shrink-0 flex flex-col bg-surface ${chatOpen ? "flex" : "hidden md:flex"}`}>
             <ChatPanel
               carouselId={id}
               claudeAvailable={claudeAvailable}
@@ -257,9 +263,9 @@ export default function CarouselEditorPage({ params }: PageProps) {
         )}
 
         {/* Right side: toolbar + preview */}
-        <div className="flex-1 flex flex-col min-w-0 min-h-0">
+        <div className={`flex-1 flex flex-col min-w-0 min-h-0 ${chatOpen ? "hidden md:flex" : "flex"}`}>
           {/* Toolbar */}
-          <div className="h-11 border-b border-border bg-surface flex items-center px-4 gap-3 shrink-0">
+          <div className="min-h-11 border-b border-border bg-surface flex flex-wrap items-center px-2 md:px-4 gap-1.5 md:gap-3 shrink-0">
             <AspectRatioSelector
               value={carousel.aspectRatio}
               onChange={handleAspectChange}
