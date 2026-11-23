@@ -31,7 +31,9 @@ RPD campaigns follow a product-fidelity-first workflow:
 5. Colour slides contain no promotional copy; only the discreet RPD watermark is allowed.
 6. Unknown facts remain unverified. Do not invent fabric, comfort, offers, prices, variants or links.
 
-**Image-generation limitation:** The current app's AI integration generates HTML/CSS slide layouts. It does not connect to an image-generation or garment-transfer model. Exact anime-character garment transfer is therefore not claimed. Use untouched product photos as source assets; a separately uploaded anime character can be composited only when supplied. The editor displays this limitation.
+**Image-generation limitation:** The app's AI integration generates HTML/CSS slide layouts and has no image-generation or garment-transfer provider. It cannot create or guarantee consistent anime influencer/product try-on by itself. The RPD workflow therefore requires uploaded source product images and an approved Character Anchor; original product photos remain the garment truth. If reference-conditioned editing is unavailable, mark identity/product fidelity **NOT VERIFIED** and use the untouched product image rather than a misleading generated garment.
+
+**Identity + garment fidelity protocol:** Keep one approved anime fashion-influencer Character Anchor across slides; vary editorial poses (walking, three-quarter, over-shoulder, relaxed, hero) but not identity. Lock the product's silhouette, neckline, sleeves, length, fabric appearance, print/motifs, embroidery/placement, borders, dupatta, trouser, included pieces and exact variant colour. Clothing must look like realistic textile while the model remains illustrated. Prefer reference-first editing and targeted fixes over fresh full-image generation. QC separately checks character identity, product identity, garment realism, pose/visibility, variant colour, anatomy, composition and text. QC cannot be marked PASS without actual inspection against references.
 
 ## Table of contents
 
