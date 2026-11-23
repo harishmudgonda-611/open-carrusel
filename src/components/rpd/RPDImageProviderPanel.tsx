@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import type { Carousel, ReferenceImage } from "@/types/carousel";
 
 type ProviderStatus = { configured: boolean; connected: boolean; message: string };
@@ -27,7 +28,7 @@ export function RPDImageProviderPanel({ carousel, onGenerated }: { carousel: Car
   const [loadingStatus, setLoadingStatus] = useState(false);
   const [garmentId, setGarmentId] = useState("");
   const [characterId, setCharacterId] = useState("");
-  const [prompt, setPrompt] = useState("");
+  const [promptOverride, setPromptOverride] = useState<string | null>(null);
   const [negativePrompt, setNegativePrompt] = useState("photorealistic human, altered garment design, wrong colour, invented embroidery, changed neckline, missing pieces, extra accessories, text, watermark duplication, malformed anatomy, extra fingers, cropped garment");
   const [job, setJob] = useState<ImageJob | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -69,7 +70,7 @@ export function RPDImageProviderPanel({ carousel, onGenerated }: { carousel: Car
       } catch (e) { setError(e instanceof Error ? e.message : "Generation status error"); }
     }, 2500);
     return () => window.clearInterval(timer);
-  }, [job?.id, job?.status, onGenerated]);
+  }, [jobId, isPending, onGenerated]);
 
   async function generate() {
     setError("");
@@ -112,15 +113,15 @@ export function RPDImageProviderPanel({ carousel, onGenerated }: { carousel: Car
         </div>
         <div className="grid gap-2 md:col-span-2">
           <label className="text-xs font-medium">Generation prompt</label>
-          <textarea className="min-h-28 w-full rounded-md border border-border bg-background p-2 text-xs" value={prompt} onChange={e => setPrompt(e.target.value)} />
+          <textarea className="min-h-28 w-full rounded-md border border-border bg-background p-2 text-xs" value={prompt} onChange={e => setPromptOverride(e.target.value)} />
           <label className="text-xs font-medium">Negative prompt</label>
           <textarea className="min-h-16 w-full rounded-md border border-border bg-background p-2 text-xs" value={negativePrompt} onChange={e => setNegativePrompt(e.target.value)} />
-          <Button size="sm" disabled={!provider?.configured || !provider.connected || !garmentId || !characterId || !prompt.trim() || submitting || (job?.status === "queued" || job?.status === "running")} onClick={generate}>
+          <Button size="sm" disabled={!provider?.configured || !provider.connected || !garmentId || !characterId || !prompt.trim() || submitting || isPending} onClick={generate}>
             {submitting ? "Submitting…" : "Generate image"}
           </Button>
         </div>
       </div>
-      {job && <div className="mt-3 rounded-md border border-border p-3 text-sm"><strong>Job:</strong> {job.status}{job.error && <p className="text-destructive">{job.error}</p>}{job.outputs?.length > 0 && <div className="mt-2 grid grid-cols-2 gap-2">{job.outputs.map(ref => <a key={ref.id} href={ref.url} target="_blank" rel="noreferrer"><img src={ref.url} alt={ref.name} className="w-full rounded border border-border" /></a>)}</div>}</div>}
+      {job && <div className="mt-3 rounded-md border border-border p-3 text-sm"><strong>Job:</strong> {job.status}{job.error && <p className="text-destructive">{job.error}</p>}{job.outputs?.length > 0 && <div className="mt-2 grid grid-cols-2 gap-2">{job.outputs.map(ref => <a key={ref.id} href={ref.url} target="_blank" rel="noreferrer"><Image src={ref.url} alt={ref.name} width={540} height={960} unoptimized className="w-full rounded border border-border" /></a>)}</div>}</div>}
       {error && <p className="mt-2 text-xs text-destructive">{error}</p>}
       {!carousel.rpdProductBrief || carousel.rpdProductBrief.status !== "verified" ? <p className="mt-2 text-xs text-amber-600">Generation is disabled until the Product Fidelity Brief is verified.</p> : null}
     </details>
