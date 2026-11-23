@@ -214,7 +214,9 @@ export default function CarouselEditorPage({ params }: PageProps) {
         }}
       />
 
-      {carousel.campaignMode === "rpd" && <RPDWorkflowBanner carousel={carousel} />}\n\n      {/* Fullscreen preview */}
+      {carousel.campaignMode === "rpd" && <RPDWorkflowBanner carousel={carousel} />}
+
+      {/* Fullscreen preview */}
       <FullscreenPreview
         open={showFullscreen}
         onOpenChange={setShowFullscreen}
